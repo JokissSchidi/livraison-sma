@@ -2,6 +2,12 @@
 # Le moteur d'itinéraires est optionnel : docker compose --profile itineraires up -d
 
 services:
+  xmpp:
+    image: ghcr.io/processone/ejabberd:latest
+    container_name: livraison-xmpp
+    restart: unless-stopped
+    ports:
+      - "5222:5222"
   postgres:
     image: postgis/postgis:16-3.4
     restart: unless-stopped
