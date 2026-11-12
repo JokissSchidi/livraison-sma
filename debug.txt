@@ -1,0 +1,210 @@
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.schemas
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.tables
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.types
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.constraints
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.defaults
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.comments
+INFO:alembic.runtime.plugins:setup plugin alembic.ext.checkconstraint_byname
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: STARTTLS
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: Resource Binding
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 3920: Stream Feature: Start Session
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6121: Stream Feature: Roster Versioning
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6121: Stream Feature: Subscription Pre-Approval
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: SASL
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0030: Service Discovery
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0199: XMPP Ping
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0004: Data Forms
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0066: Out of Band Data
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0077: In-Band Registration
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0128: Service Discovery Extensions
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0363: HTTP File Upload
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: connecting
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: connected
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <stream:stream to='127.0.0.1' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client' xml:lang='en' version='1.0'>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:stream id="35b222fb-52bc-47a3-b458-f275549555fc" version="1.0">
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:features xmlns="http://etherx.jabber.org/streams"><starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls"><stream:required xmlns="http://etherx.jabber.org/streams" /></starttls></stream:features>
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <proceed xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+DEBUG:slixmpp.features.feature_starttls.starttls:Starting TLS
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: ssl_cert
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: tls_success
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <stream:stream to='127.0.0.1' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client' xml:lang='en' version='1.0'>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:stream id="120a5d0f-b95d-42c4-a94d-e22c07582729" version="1.0">
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:features xmlns="http://etherx.jabber.org/streams"><register xmlns="http://jabber.org/features/iq-register" /><mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl"><mechanism>PLAIN</mechanism></mechanisms></stream:features>
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <iq id="7803d202e32043af8c4fb74afa121a4c" type="get"><query xmlns="jabber:iq:register" /></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <iq id="7803d202e32043af8c4fb74afa121a4c" type="result"><query xmlns="jabber:iq:register"><username xmlns="jabber:client" /><password xmlns="jabber:client" /></query></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <iq id="b4ffcba1b2b542ea9e73b8dd6a9c9716" type="set"><query xmlns="jabber:iq:register"><username>pong</username><password>root</password></query></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <iq type="result" id="b4ffcba1b2b542ea9e73b8dd6a9c9716" from="0.0.0.0" />
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <auth xmlns="urn:ietf:params:xml:ns:xmpp-sasl" mechanism="PLAIN">AHBvbmcAcm9vdA==</auth>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <success xmlns="urn:ietf:params:xml:ns:xmpp-sasl" />
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: auth_success
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <stream:stream to='127.0.0.1' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client' xml:lang='en' version='1.0'>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:stream id="9b171777-1f38-4bba-a1b7-59566e3aaa02" version="1.0">
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:features xmlns="http://etherx.jabber.org/streams"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" /></stream:features>
+DEBUG:slixmpp.features.feature_bind.bind:Requesting resource: 
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <iq id="d8ff8bb50e0a4ed2bef9e43ff7ed10d5" type="set"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" /></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <iq id="d8ff8bb50e0a4ed2bef9e43ff7ed10d5" type="result"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><jid>pong@0.0.0.0/1bd3aeca-7a0e-49b6-9f1b-78a104df7078</jid></bind></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: session_bind
+INFO:slixmpp.features.feature_bind.bind:JID set to: pong@0.0.0.0/1bd3aeca-7a0e-49b6-9f1b-78a104df7078
+DEBUG:slixmpp.features.feature_bind.bind:Established Session
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: session_start
+DEBUG:slixmpp.clientxmpp:Finished processing stream features.
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: stream_negotiated
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: sent_presence
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <presence id="0455a8b55ac34b4ba39e48b26d6657c6" xml:lang="en" />
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <iq id="a57e39e67ff243df81a36147289de7fe" type="get"><query xmlns="jabber:iq:roster" /></iq>
+INFO:spade.Agent:Agent pong@127.0.0.1 connected and authenticated.
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: STARTTLS
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: Resource Binding
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 3920: Stream Feature: Start Session
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6121: Stream Feature: Roster Versioning
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6121: Stream Feature: Subscription Pre-Approval
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: SASL
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0030: Service Discovery
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0199: XMPP Ping
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0004: Data Forms
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0066: Out of Band Data
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0077: In-Band Registration
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0128: Service Discovery Extensions
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0363: HTTP File Upload
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: connecting
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <iq id="a57e39e67ff243df81a36147289de7fe" type="result"><query xmlns="jabber:iq:roster" /></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: roster_update
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: connected
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <stream:stream to='127.0.0.1' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client' xml:lang='en' version='1.0'>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:stream id="b6f082d4-33ab-4b92-a862-1ea5286c8f53" version="1.0">
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:features xmlns="http://etherx.jabber.org/streams"><starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls"><stream:required xmlns="http://etherx.jabber.org/streams" /></starttls></stream:features>
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <proceed xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+DEBUG:slixmpp.features.feature_starttls.starttls:Starting TLS
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: ssl_cert
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: tls_success
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <stream:stream to='127.0.0.1' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client' xml:lang='en' version='1.0'>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:stream id="550f4c48-e753-43fa-97d3-e87270d21a50" version="1.0">
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:features xmlns="http://etherx.jabber.org/streams"><register xmlns="http://jabber.org/features/iq-register" /><mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl"><mechanism>PLAIN</mechanism></mechanisms></stream:features>
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <iq id="96551027a6f044e18892f25aff85b017" type="get"><query xmlns="jabber:iq:register" /></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <iq id="96551027a6f044e18892f25aff85b017" type="result"><query xmlns="jabber:iq:register"><username xmlns="jabber:client" /><password xmlns="jabber:client" /></query></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <iq id="ef24f8461592414e9b5a70be617e1ba8" type="set"><query xmlns="jabber:iq:register"><username>ping</username><password>root</password></query></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <iq type="result" id="ef24f8461592414e9b5a70be617e1ba8" from="0.0.0.0" />
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <auth xmlns="urn:ietf:params:xml:ns:xmpp-sasl" mechanism="PLAIN">AHBpbmcAcm9vdA==</auth>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <success xmlns="urn:ietf:params:xml:ns:xmpp-sasl" />
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: auth_success
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <stream:stream to='127.0.0.1' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client' xml:lang='en' version='1.0'>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:stream id="71ceb6a0-68bf-427b-8099-ae32a2f3e22b" version="1.0">
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:features xmlns="http://etherx.jabber.org/streams"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" /></stream:features>
+DEBUG:slixmpp.features.feature_bind.bind:Requesting resource: 
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <iq id="450932db383b41638b0e14ad9ba44384" type="set"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" /></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <iq id="450932db383b41638b0e14ad9ba44384" type="result"><bind xmlns="urn:ietf:params:xml:ns:xmpp-bind"><jid>ping@0.0.0.0/15ed8696-1cbf-4738-b390-88e00d001736</jid></bind></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: session_bind
+INFO:slixmpp.features.feature_bind.bind:JID set to: ping@0.0.0.0/15ed8696-1cbf-4738-b390-88e00d001736
+DEBUG:slixmpp.features.feature_bind.bind:Established Session
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: session_start
+DEBUG:slixmpp.clientxmpp:Finished processing stream features.
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: stream_negotiated
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: sent_presence
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <presence id="abd4fe1f6e884f23a88665329cf72a5a" xml:lang="en" />
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <iq id="5f5ea101d6ec4d05a6407c8f0de02b77" type="get"><query xmlns="jabber:iq:roster" /></iq>
+INFO:spade.Agent:Agent ping@127.0.0.1 connected and authenticated.
+DEBUG:spade.behaviour:Periodic behaviour activated: PeriodicBehaviour/Emettre
+DEBUG:spade.behaviour:Adding agent's jid as sender to message: <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #1
+</message>
+DEBUG:spade.Agent:Got message: <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #1
+</message>
+DEBUG:spade.Message:message matched <template to="" from="" thread="None" metadata={'performative': 'request'}></template> == <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #1
+</message>
+DEBUG:spade.Agent:Message enqueued to behaviour: CyclicBehaviour/Repondre
+DEBUG:spade.behaviour:Periodic behaviour going to sleep for 0.99944 seconds: PeriodicBehaviour/Emettre
+DEBUG:spade.Agent:Got message: <message to="ping@127.0.0.1" from="pong@127.0.0.1" thread="test-ping" metadata={'performative': 'inform'}>
+pong #1
+</message>
+DEBUG:spade.Message:message matched <template to="" from="" thread="None" metadata={'performative': 'inform'}></template> == <message to="ping@127.0.0.1" from="pong@127.0.0.1" thread="test-ping" metadata={'performative': 'inform'}>
+pong #1
+</message>
+DEBUG:spade.Agent:Message enqueued to behaviour: CyclicBehaviour/Recevoir
+DEBUG:spade.Agent:Message enqueued to behaviour: PeriodicBehaviour/Emettre
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <iq id="5f5ea101d6ec4d05a6407c8f0de02b77" type="result"><query xmlns="jabber:iq:roster" /></iq>
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: roster_update
+DEBUG:spade.behaviour:Periodic behaviour activated: PeriodicBehaviour/Emettre
+DEBUG:spade.behaviour:Adding agent's jid as sender to message: <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #2
+</message>
+DEBUG:spade.Agent:Got message: <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #2
+</message>
+DEBUG:spade.Message:message matched <template to="" from="" thread="None" metadata={'performative': 'request'}></template> == <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #2
+</message>
+DEBUG:spade.Agent:Message enqueued to behaviour: CyclicBehaviour/Repondre
+DEBUG:spade.behaviour:Periodic behaviour going to sleep for 0.995271 seconds: PeriodicBehaviour/Emettre
+DEBUG:spade.Agent:Got message: <message to="ping@127.0.0.1" from="pong@127.0.0.1" thread="test-ping" metadata={'performative': 'inform'}>
+pong #2
+</message>
+DEBUG:spade.Message:message matched <template to="" from="" thread="None" metadata={'performative': 'inform'}></template> == <message to="ping@127.0.0.1" from="pong@127.0.0.1" thread="test-ping" metadata={'performative': 'inform'}>
+pong #2
+</message>
+DEBUG:spade.Agent:Message enqueued to behaviour: CyclicBehaviour/Recevoir
+DEBUG:spade.Agent:Message enqueued to behaviour: PeriodicBehaviour/Emettre
+DEBUG:spade.behaviour:Periodic behaviour activated: PeriodicBehaviour/Emettre
+DEBUG:spade.behaviour:Adding agent's jid as sender to message: <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #3
+</message>
+DEBUG:spade.Agent:Got message: <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #3
+</message>
+DEBUG:spade.Message:message matched <template to="" from="" thread="None" metadata={'performative': 'request'}></template> == <message to="pong@127.0.0.1" from="ping@127.0.0.1" thread="test-ping" metadata={'performative': 'request'}>
+ping #3
+</message>
+DEBUG:spade.Agent:Message enqueued to behaviour: CyclicBehaviour/Repondre
+INFO:spade.behaviour:Killing behavior PeriodicBehaviour/Emettre with exit code: None
+INFO:spade.behaviour:Killing behavior PeriodicBehaviour/Emettre with exit code: None
+DEBUG:spade.Agent:Got message: <message to="ping@127.0.0.1" from="pong@127.0.0.1" thread="test-ping" metadata={'performative': 'inform'}>
+pong #3
+</message>
+DEBUG:spade.Message:message matched <template to="" from="" thread="None" metadata={'performative': 'inform'}></template> == <message to="ping@127.0.0.1" from="pong@127.0.0.1" thread="test-ping" metadata={'performative': 'inform'}>
+pong #3
+</message>
+DEBUG:spade.Agent:Message enqueued to behaviour: CyclicBehaviour/Recevoir
+INFO:spade.behaviour:Killing behavior CyclicBehaviour/Recevoir with exit code: None
+INFO:spade.behaviour:Killing behavior CyclicBehaviour/Recevoir with exit code: None
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <presence type="unavailable" id="379a8a9638fa438eb3d47f2ac03e18b8" xml:lang="en"><priority>0</priority></presence>
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: </stream:stream>
+DEBUG:slixmpp.xmlstream.xmlstream:End of stream received
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: eof_received
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: killed
+INFO:slixmpp.xmlstream.xmlstream:connection_lost: (None,)
+DEBUG:slixmpp.xmlstream.xmlstream:Cancelling 0 slow send tasks
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: session_end
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: disconnected
+INFO:spade.Agent:Client disconnected.
+INFO:spade.behaviour:Killing behavior CyclicBehaviour/Repondre with exit code: None
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <presence type="unavailable" id="3a7ea231818e478c9083e1a2470ebe2f" xml:lang="en"><priority>0</priority></presence>
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: </stream:stream>
+DEBUG:slixmpp.xmlstream.xmlstream:End of stream received
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: eof_received
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: killed
+INFO:slixmpp.xmlstream.xmlstream:connection_lost: (None,)
+DEBUG:slixmpp.xmlstream.xmlstream:Cancelling 0 slow send tasks
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: session_end
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: disconnected
+INFO:spade.Agent:Client disconnected.
+DEBUG:slixmpp.xmlstream.xmlstream:NOT SENT: <class 'slixmpp.stanza.presence.Presence'> <presence type="unavailable" id="719e8f6c563c4795a636fede77824c07" xml:lang="en"><priority>0</priority></presence>
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: stanza_not_sent
+INFO:spade.behaviour:Killing behavior CyclicBehaviour/Repondre with exit code: None
+DEBUG:slixmpp.xmlstream.xmlstream:NOT SENT: <class 'slixmpp.stanza.presence.Presence'> <presence type="unavailable" id="b536d826e5e444d885c7325ca84d63f6" xml:lang="en"><priority>0</priority></presence>
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: stanza_not_sent
+DEBUG:spade.behaviour:Behaviour CyclicBehaviour/Repondre cancelled
+INFO:spade.behaviour:Killing behavior CyclicBehaviour/Repondre with exit code: None
+DEBUG:SPADE:Loop closed
+ping -> ping #1
+pong a reçu « ping #1 » de ping
+ping <- « pong #1 »
+ping -> ping #2
+pong a reçu « ping #2 » de ping
+ping <- « pong #2 »
+ping -> ping #3
+pong a reçu « ping #3 » de ping
+ping <- « pong #3 »
+OK : les agents communiquent.

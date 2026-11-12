@@ -1,0 +1,38 @@
+DEBUG:asyncio:Using selector: SelectSelector
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.schemas
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.tables
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.types
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.constraints
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.defaults
+INFO:alembic.runtime.plugins:setup plugin alembic.autogenerate.comments
+INFO:alembic.runtime.plugins:setup plugin alembic.ext.checkconstraint_byname
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: STARTTLS
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: Resource Binding
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 3920: Stream Feature: Start Session
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6121: Stream Feature: Roster Versioning
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6121: Stream Feature: Subscription Pre-Approval
+DEBUG:slixmpp.plugins.base:Loaded Plugin: RFC 6120: Stream Feature: SASL
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0030: Service Discovery
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0199: XMPP Ping
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0004: Data Forms
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0128: Service Discovery Extensions
+DEBUG:slixmpp.plugins.base:Loaded Plugin: XEP-0363: HTTP File Upload
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: connecting
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: connected
+DEBUG:slixmpp.xmlstream.xmlstream:SEND: <stream:stream to='127.0.0.1' xmlns:stream='http://etherx.jabber.org/streams' xmlns='jabber:client' xml:lang='en' version='1.0'>
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:stream id="10667195598588449745" version="1.0" xml:lang="en" from="127.0.0.1">
+DEBUG:slixmpp.xmlstream.xmlstream:RECV: <stream:error xmlns="http://etherx.jabber.org/streams"><host-unknown xmlns="urn:ietf:params:xml:ns:xmpp-streams" /></stream:error>
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: stream_error
+DEBUG:slixmpp.xmlstream.xmlstream:End of stream received
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: killed
+INFO:slixmpp.xmlstream.xmlstream:connection_lost: (None,)
+DEBUG:slixmpp.xmlstream.xmlstream:Cancelling 0 slow send tasks
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: session_end
+DEBUG:slixmpp.xmlstream.xmlstream:Event triggered: disconnected
+DEBUG:slixmpp.xmlstream.xmlstream:Tried to cancel unscheduled event: Whitespace Keepalive
+--- Test TCP vers 127.0.0.1:5222
+Adresses résolues : ['127.0.0.1']
+Connecté à ('127.0.0.1', 5222)
+Réponse du serveur : <?xml version='1.0'?><stream:stream id='3978763253230600705' version='1.0' xml:lang='en' xmlns:stream='http://etherx.jabber.org/streams' from='127.0.0.1' xmlns='jabber:client'>
+--- Test SPADE (une seule tentative)
+ÉCHEC SPADE : DisconnectedException('Error during the connection with the server')

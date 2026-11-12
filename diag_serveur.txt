@@ -1,0 +1,30 @@
+2026-11-12 08:15:26.397 [info] Creating Mnesia disc_only table 'oauth_token'
+2026-11-12 08:15:26.400 [info] Creating Mnesia disc table 'oauth_client'
+2026-11-12 08:15:26.426 [info] Waiting for Mnesia synchronization to complete
+2026-11-12 08:15:26.444 [warning] Invalid certificate in /opt/ejabberd/conf/server.pem: at line 53: self-signed certificate
+2026-11-12 08:15:26.487 [warning] No certificate found matching pubsub.localhost
+2026-11-12 08:15:26.487 [warning] No certificate found matching proxy.localhost
+2026-11-12 08:15:26.487 [warning] No certificate found matching upload.localhost
+2026-11-12 08:15:26.487 [warning] No certificate found matching conference.localhost
+2026-11-12 08:15:26.491 [info] ejabberd 26.9.0 is started in the node :ejabberd@localhost in 1.39s
+2026-11-12 08:15:26.540 [info] Elixir 1.19.6 (compiled with Erlang/OTP 28)
+2026-11-12 08:15:26.540 [info] Erlang/OTP 28 [erts-16.4.0.2] [source] [64-bit] [smp:8:8] [ds:8:8:10] [async-threads:1] [jit:ns]
+
+2026-11-12 08:15:26.540 [info] Start accepting TCP connections at 0.0.0.0:35129 for erlang distribution
+2026-11-12 08:15:26.543 [info] Start accepting UDP connections at [::]:5478 for :ejabberd_stun
+2026-11-12 08:15:26.543 [info] Start accepting TLS connections at [::]:5223 for :ejabberd_c2s
+2026-11-12 08:15:26.543 [info] Start accepting TCP connections at [::]:5222 for :ejabberd_c2s
+2026-11-12 08:15:26.543 [info] Start accepting TLS connections at [::]:5443 for :ejabberd_http
+2026-11-12 08:15:26.543 [info] Start accepting TCP connections at [::]:5269 for :ejabberd_s2s_in
+2026-11-12 08:15:26.543 [info] Start accepting TCP connections at [::]:1883 for :mod_mqtt
+2026-11-12 08:15:26.543 [info] Start accepting TCP connections at [::]:1880 for :ejabberd_http
+2026-11-12 08:15:26.543 [info] Start accepting TCP connections at [::]:5280 for :ejabberd_http
+2026-11-12 08:15:26.543 [info] Start accepting TCP connections at unix:/opt/ejabberd/database/../sockets/ctl_over_http.sock for :ejabberd_http
+2026-11-12 08:15:26.543 [info] Start accepting TCP connections at 172.20.0.4:7777 for :mod_proxy65_stream
+2026-11-12 08:18:21.670 [info] (#PID<0.887.0>) Accepted connection [::ffff:172.20.0.1]:35376 -> [::ffff:172.20.0.4]:5222
+2026-11-12 08:18:22.749 [info] (#PID<0.890.0>) Accepted connection [::ffff:172.20.0.1]:35388 -> [::ffff:172.20.0.4]:5222
+2026-11-12 08:18:23.784 [info] (#PID<0.891.0>) Accepted connection [::ffff:172.20.0.1]:35398 -> [::ffff:172.20.0.4]:5222
+2026-11-12 08:18:24.816 [info] (#PID<0.892.0>) Accepted connection [::ffff:172.20.0.1]:35412 -> [::ffff:172.20.0.4]:5222
+2026-11-12 08:18:25.858 [info] (#PID<0.901.0>) Accepted connection [::ffff:172.20.0.1]:35424 -> [::ffff:172.20.0.4]:5222
+2026-11-12 08:20:01.024 [info] (#PID<0.905.0>) Accepted connection [::ffff:172.20.0.1]:40766 -> [::ffff:172.20.0.4]:5222
+2026-11-12 08:20:02.848 [info] (#PID<0.906.0>) Accepted connection [::ffff:172.20.0.1]:40774 -> [::ffff:172.20.0.4]:5222
