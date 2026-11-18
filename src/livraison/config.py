@@ -31,6 +31,11 @@ class Parametres(BaseSettings):
             f"@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
         )
 
+    @property
+    def sqlalchemy_url(self) -> str:
+        """URL SQLAlchemy asynchrone (pilote asyncpg)."""
+        return self.postgres_dsn.replace("postgresql://", "postgresql+asyncpg://", 1)
+
     def jid(self, nom: str) -> str:
         """Identifiant XMPP d'un agent, par exemple dispatcher@localhost."""
         return f"{nom}@{self.xmpp_domaine}"
