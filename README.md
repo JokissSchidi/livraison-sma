@@ -223,6 +223,8 @@ SPADE fournit un serveur XMPP de développement. Le lancer dans un **terminal d�
 
 ```bash
 spade run
+
+## spade run est devenu docker compose up -d (avec les comptes créés par ejabberdctl register)
 ```
 
 Dans un **second terminal** (environnement activé) :
