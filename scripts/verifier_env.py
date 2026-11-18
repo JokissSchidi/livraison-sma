@@ -61,7 +61,7 @@ def verifier_xmpp(p) -> None:
         with socket.create_connection((p.xmpp_host, p.xmpp_port), timeout=3):
             noter("Serveur XMPP", True, f"{p.xmpp_host}:{p.xmpp_port}")
     except OSError:
-        noter("Serveur XMPP", False, "injoignable : lancez « spade run » dans un autre terminal")
+        noter("Serveur XMPP", False, "injoignable : lancez « docker compose up -d » dans un autre terminal")
 
 
 async def verifier_osrm(p) -> None:

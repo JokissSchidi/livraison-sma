@@ -4,13 +4,9 @@ Prérequis : `docker compose up -d` puis `alembic upgrade head`.
 Les tests s'ignorent d'eux-mêmes si PostgreSQL n'est pas joignable.
 """
 import pytest
-import pytest_asyncio
-from sqlalchemy import func, select, text
+from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.pool import NullPool
 
-from livraison.config import parametres
 from livraison.db.base import Base
 from livraison.db.modeles import (
     Commande,
@@ -23,35 +19,12 @@ from livraison.db.modeles import (
 
 TABLES_ATTENDUES = {
     "utilisateurs", "livreurs", "commandes", "positions",
-    "offres", "paiements", "factures", "evenements",
+    "offres", "paiements", "factures", "evenements", "codes_verification",
 }
 
 
 def test_metadata_contient_les_tables_du_cahier_des_charges():
     assert TABLES_ATTENDUES <= set(Base.metadata.tables)
-
-
-@pytest_asyncio.fixture
-async def session():
-    moteur = create_async_engine(parametres.sqlalchemy_url, poolclass=NullPool)
-    try:
-        async with moteur.connect() as cx:
-            existantes = (await cx.execute(
-                text("select table_name from information_schema.tables where table_schema='public'")
-            )).scalars().all()
-    except Exception as e:  # noqa: BLE001
-        await moteur.dispose()
-        pytest.skip(f"PostgreSQL injoignable : {type(e).__name__}")
-    if not TABLES_ATTENDUES <= set(existantes):
-        await moteur.dispose()
-        pytest.skip("Tables absentes : lancez `alembic upgrade head`")
-    async with moteur.connect() as cx:
-        transaction = await cx.begin()
-        s = AsyncSession(bind=cx, expire_on_commit=False)
-        yield s
-        await s.close()
-        await transaction.rollback()  # rien n'est conservé en base
-    await moteur.dispose()
 
 
 async def test_creer_commande_avec_positions_gps(session):

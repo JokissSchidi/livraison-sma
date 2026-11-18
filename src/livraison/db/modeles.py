@@ -210,3 +210,17 @@ class Evenement(Base):
     auteur_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("utilisateurs.id"))
     detail: Mapped[dict] = mapped_column(JSON, default=dict)
     cree_le: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class CodeVerification(Base):
+    """Code à usage unique envoyé par SMS (stocké haché, jamais en clair)."""
+
+    __tablename__ = "codes_verification"
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    telephone: Mapped[str] = mapped_column(String(20), index=True)
+    code_hash: Mapped[str] = mapped_column(String(64))
+    expire_le: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    tentatives: Mapped[int] = mapped_column(Integer, default=0)
+    utilise: Mapped[bool] = mapped_column(default=False)
+    cree_le: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
