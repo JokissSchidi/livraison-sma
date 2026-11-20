@@ -90,6 +90,8 @@ class LivreurAgent(Agent):
                     await self.sur_acceptation(agent, msg)
                 elif perf == m.REJECT:
                     journal.info("Offre non retenue pour la commande %s", msg.thread)
+                elif perf == m.CANCEL:
+                    await self.sur_annulation(agent, msg)
             except (KeyError, ValueError, TypeError) as e:
                 journal.warning("Message invalide ignoré (%s) : %s", type(e).__name__, e)
                 await self.send(m.repondre(msg, m.FAILURE, {"erreur": str(e)}))
@@ -101,6 +103,22 @@ class LivreurAgent(Agent):
                 await self.send(m.repondre(msg, m.PROPOSE, m.proposition_vers_json(resultat)))
             else:
                 await self.send(m.repondre(msg, m.REFUSE, m.refus_vers_json(resultat)))
+
+        async def sur_annulation(self, agent, msg):
+            """La course est retirée du livreur (refus humain, panne, annulation) : sa place est libérée."""
+            commande = msg.thread
+            demande = agent.courses.pop(commande, None)
+            if demande is not None:
+                arrets = list(agent.situation.arrets_restants)
+                for point in (demande.enlevement, demande.livraison):
+                    if point in arrets:
+                        arrets.remove(point)
+                s = agent.situation
+                agent.situation = dataclasses.replace(
+                    s, arrets_restants=tuple(arrets), nb_courses=max(0, s.nb_courses - 1),
+                    charge_kg=max(0.0, s.charge_kg - demande.poids_kg))
+            await self.send(m.repondre(msg, m.INFORM, {"etat": "annule" if demande else "inconnu",
+                                                        "commande": commande}))
 
         async def sur_acceptation(self, agent, msg):
             commande = msg.thread

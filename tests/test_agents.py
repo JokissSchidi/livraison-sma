@@ -228,3 +228,15 @@ async def test_deux_acceptations_simultanees_une_seule_passe(plateforme):
         plateforme.clients[1].echanger(accepter(cible, "cmd-B")),
     )
     assert sorted(m.performative(r) for r in reponses) == [m.FAILURE, m.INFORM]
+
+
+async def test_annulation_libere_la_place_du_livreur(plateforme):
+    agent = await plateforme.gestionnaire.connecter(situation("x1"))
+    cible = jid_livreur("x1")
+    await plateforme.client.echanger(accepter(cible, "cmd-1"))
+    assert agent.situation.nb_courses == 1 and agent.situation.charge_kg == 2.0
+    rep = await plateforme.client.echanger(m.creer(cible, m.CANCEL, {}, thread="cmd-1"))
+    assert m.performative(rep) == m.INFORM and m.lire(rep)["etat"] == "annule"
+    assert agent.situation.nb_courses == 0 and agent.situation.charge_kg == 0 and agent.situation.arrets_restants == ()
+    rep = await plateforme.client.echanger(m.creer(cible, m.CANCEL, {}, thread="inconnue"))
+    assert m.lire(rep)["etat"] == "inconnu"  # annuler deux fois ne casse rien

@@ -23,6 +23,7 @@ REJECT = "reject-proposal"
 INFORM = "inform"
 FAILURE = "failure"
 REQUEST = "request"
+CANCEL = "cancel"
 
 
 def creer(vers: str, performative: str, corps: dict, thread: str | None = None) -> Message:
