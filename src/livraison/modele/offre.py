@@ -104,6 +104,7 @@ class Proposition:
     penalite_s: float
     arrivee_estimee: datetime  # heure d'arrivée au point d'enlèvement
     note: float | None = None
+    arrets_apres: tuple[Coord, ...] = ()  # arrêts restants si la course est acceptée (ordre optimal)
 
 
 @dataclass(frozen=True)
@@ -143,11 +144,12 @@ def _verifier_regles(
     return None
 
 
-def _meilleure_insertion(d: list[list[float]], n: int) -> tuple[float, float, float]:
+def _meilleure_insertion(d: list[list[float]], n: int) -> tuple[float, float, float, list[int]]:
     """Insère enlèvement (E) puis livraison (L) dans la tournée au meilleur endroit.
 
     Indices de la matrice d : 0 = position, 1..n = arrêts restants, n+1 = E, n+2 = L.
-    Renvoie (ajout_total_s, duree_jusqu_a_E_s, duree_E_vers_L_s) ; ajout_total = INFINI si impossible.
+    Renvoie (ajout_total_s, duree_jusqu_a_E_s, duree_E_vers_L_s, ordre) ; ajout_total = INFINI si
+    impossible. `ordre` est la nouvelle tournée (indices, position comprise).
     """
     e, l = n + 1, n + 2
     route = list(range(n + 1))  # 0, 1, ..., n
@@ -156,15 +158,15 @@ def _meilleure_insertion(d: list[list[float]], n: int) -> tuple[float, float, fl
         return sum(d[a][b] for a, b in zip(seq, seq[1:], strict=False))
 
     actuelle = duree(route)
-    meilleur = (INFINI, INFINI)
+    meilleur: tuple[float, float, list[int]] = (INFINI, INFINI, route)
     for i in range(n + 1):  # E est inséré après route[i]
         for j in range(i, n + 1):  # L est inséré après route[j] (j >= i : E avant L)
             seq = route[: i + 1] + [e] + route[i + 1 : j + 1] + [l] + route[j + 1 :]
             total = duree(seq)
             if total - actuelle < meilleur[0]:
                 jusqu_a_e = duree(seq[: seq.index(e) + 1])
-                meilleur = (total - actuelle, jusqu_a_e)
-    return meilleur[0], meilleur[1], d[e][l]
+                meilleur = (total - actuelle, jusqu_a_e, seq)
+    return meilleur[0], meilleur[1], d[e][l], meilleur[2]
 
 
 async def evaluer_offre(
@@ -190,7 +192,7 @@ async def evaluer_offre(
         return Refus(livreur.livreur_id, MotifRefus.MOTEUR_INDISPONIBLE, str(e))
 
     d = [[INFINI if c is None else c.duree_s for c in ligne] for ligne in matrice]
-    ajout, jusqu_a_e, e_vers_l = _meilleure_insertion(d, n)
+    ajout, jusqu_a_e, e_vers_l, ordre = _meilleure_insertion(d, n)
     approche = d[0][n + 1]
     if math.isinf(ajout) or math.isinf(approche) or math.isinf(e_vers_l):
         return Refus(livreur.livreur_id, MotifRefus.AUCUN_ITINERAIRE, "point inaccessible par la route")
@@ -206,6 +208,7 @@ async def evaluer_offre(
         penalite_s=penalite,
         arrivee_estimee=maintenant + timedelta(seconds=jusqu_a_e),
         note=livreur.note,
+        arrets_apres=tuple(points[i] for i in ordre[1:]),
     )
 
 

@@ -17,6 +17,8 @@ class Parametres(BaseSettings):
     xmpp_port: int = 5222
     xmpp_domaine: str = "localhost"
     xmpp_mot_de_passe_agents: str = "changez-moi"
+    # Commande qui exécute ejabberdctl (création des comptes XMPP des agents). Développement : Docker.
+    xmpp_ctl: str = "docker exec livraison-xmpp ejabberdctl"
 
     osrm_url: str = "http://localhost:5000"
 
