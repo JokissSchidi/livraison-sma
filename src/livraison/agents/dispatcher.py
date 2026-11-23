@@ -324,6 +324,9 @@ class DispatcherAgent(Agent):
                     refus[corps["livreur_id"]] = m.refus_depuis_json(corps)
         for lid, rf in refus.items():
             self._evenement(cmd, "offre_refusee", livreur=lid, motif=rf.motif.value)
+        for lid, p in propositions.items():
+            self._evenement(cmd, "offre_recue", livreur=lid, cout=p.cout, approche_s=p.approche_s,
+                            detour_s=p.detour_s, penalite_s=p.penalite_s, arrivee=p.arrivee_estimee.isoformat())
         if not propositions:
             suivi.motifs.append("tous les livreurs ont refusé ou n'ont pas répondu")
             return None

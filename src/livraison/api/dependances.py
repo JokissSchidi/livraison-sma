@@ -2,7 +2,7 @@
 import uuid
 
 import jwt
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -42,3 +42,12 @@ def exiger_roles(*roles: Role):
         return utilisateur
 
     return verifier
+
+
+def obtenir_plateforme(request: Request):
+    """La plateforme multi-agents démarrée avec l'API ; 503 si elle n'a pas pu démarrer (XMPP arrêté...)."""
+    plateforme = getattr(request.app.state, "plateforme", None)
+    if plateforme is None:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
+                            "La plateforme d'attribution n'est pas disponible (serveur XMPP arrêté ?).")
+    return plateforme
