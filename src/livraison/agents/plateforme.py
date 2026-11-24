@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from livraison.agents.annuaire import AnnuaireAgent
 from livraison.agents.dispatcher import DispatcherAgent, ReglagesDispatcher, ResultatAttribution
 from livraison.agents.gestionnaire import GestionnaireLivreurs
+from livraison.agents.supervision import ReglagesSupervision, Superviseur
 from livraison.config import parametres
 from livraison.modele.offre import Coefficients, Demande, Proposition, SituationLivreur
 from livraison.services.comptes_xmpp import ComptesEjabberd
@@ -37,7 +38,7 @@ class PropositionEnAttente:
 class Plateforme:
     def __init__(self, fabrique_session, *, comptes=None, itineraires=None,
                  reglages: ReglagesDispatcher | None = None, coef: Coefficients | None = None,
-                 prefixe_jid: str = ""):
+                 prefixe_jid: str = "", supervision: ReglagesSupervision | None = None):
         self.fabrique_session = fabrique_session
         self.comptes = comptes or ComptesEjabberd()
         self.itineraires = itineraires or ClientItineraires.depuis_config()
@@ -45,6 +46,7 @@ class Plateforme:
         self.reglages = reglages or ReglagesDispatcher(coef=self.coef)
         self.prefixe = prefixe_jid
         self.depot = Depot(fabrique_session)
+        self.superviseur = Superviseur(self, supervision)
         self.alertes: list[tuple[str, str]] = []  # commandes à traiter par le répartiteur
         self.annuaire: AnnuaireAgent | None = None
         self.dispatcher: DispatcherAgent | None = None
@@ -66,9 +68,11 @@ class Plateforme:
             sur_evenement=self.depot.sur_evenement, signaler=self._alerter, port=port)
         await self.dispatcher.start(auto_register=False)
         self.gestionnaire = GestionnaireLivreurs(f"{noms[0]}@{d}", self.itineraires, self.coef, self.comptes)
+        self.superviseur.demarrer()
         journal.info("Plateforme multi-agents démarrée")
 
     async def arreter(self) -> None:
+        await self.superviseur.arreter()
         for tache in list(self._taches):
             tache.cancel()
         for attente in self._attentes.values():
@@ -93,6 +97,12 @@ class Plateforme:
     def lancer_attribution(self, commande_id: str, demande: Demande, urgente: bool = False) -> None:
         """Lance l'attribution en arrière-plan (l'API répond tout de suite)."""
         tache = asyncio.create_task(self.dispatcher.soumettre(commande_id, demande, urgente))
+        self._taches.add(tache)
+        tache.add_done_callback(self._taches.discard)
+
+    def lancer_reattribution(self, commande_id: str, raison: str) -> None:
+        """Relance l'appel d'offres en arrière-plan (la confirmation humaine peut durer 30 s : la surveillance ne doit pas attendre)."""
+        tache = asyncio.create_task(self.dispatcher.reattribuer(commande_id, raison))
         self._taches.add(tache)
         tache.add_done_callback(self._taches.discard)
 
