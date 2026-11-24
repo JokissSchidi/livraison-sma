@@ -44,6 +44,8 @@ async def connexion(position: PositionIn, livreur_user: Utilisateur = LIVREUR,
         note=float(livreur.note) if livreur.note is not None else None)
     await plateforme.livreur_en_ligne(situation)
     livreur.en_ligne = True
+    session.add(Position(livreur_id=livreur_user.id, precision_m=position.precision_m,
+                         position=f"SRID=4326;POINT({position.longitude} {position.latitude})"))
     await session.commit()
     return {"etat": "en_ligne"}
 

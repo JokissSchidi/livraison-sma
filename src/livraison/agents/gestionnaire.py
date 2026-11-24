@@ -30,6 +30,9 @@ class GestionnaireLivreurs:
     def __len__(self) -> int:
         return len(self._agents)
 
+    def en_ligne(self) -> dict[str, LivreurAgent]:
+        return dict(self._agents)
+
     def agent(self, livreur_id: str) -> LivreurAgent | None:
         return self._agents.get(livreur_id)
 

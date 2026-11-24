@@ -210,6 +210,21 @@ class DispatcherAgent(Agent):
             await asyncio.wait_for(suivi.fin.wait(), timeout=delai_s)
         return suivi.resultat()
 
+    def restaurer_attribuee(self, commande_id: str, demande: Demande, livreur_id: str, jid: str,
+                            urgente: bool = False, cree_le: datetime | None = None) -> None:
+        """Après un redémarrage : retrouve une commande déjà attribuée (réattribution et annulation redeviennent possibles)."""
+        if commande_id in self.suivis:
+            return
+        suivi = Suivi(commande_id, demande, urgente, rayon_m=self.reglages.rayon_initial_m,
+                      statut=Statut.ATTRIBUEE, tentatives=1)
+        if cree_le:
+            suivi.cree_le = cree_le
+        proposition = Proposition(livreur_id, 0.0, 0.0, 0.0, 0.0, datetime.now(UTC))
+        suivi.attribution = Attribution(commande_id, livreur_id, jid, proposition, 1)
+        suivi.fin.set()
+        self.suivis[commande_id] = suivi
+        self._evenement(commande_id, "reprise", livreur=livreur_id, etat="attribuee")
+
     def reveiller(self) -> None:
         """À appeler quand un livreur passe en ligne : la file d'attente est retentée tout de suite."""
         self._reveil.set()

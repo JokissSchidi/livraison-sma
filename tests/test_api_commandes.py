@@ -243,8 +243,9 @@ async def test_position_gps_enregistree_et_mise_a_jour(systeme):
     r = await s.api.post("/livreurs/moi/position", json={**gps(pt(25, 0)), "precision_m": 8.5}, headers=livreur)
     assert r.status_code == 200
     async with s.fabrique() as session:
-        positions = (await session.scalars(select(Position))).all()
-    assert len(positions) == 1 and float(positions[0].precision_m) == 8.5
+        positions = (await session.scalars(select(Position).order_by(Position.enregistree_le))).all()
+    # Deux points : celui de la connexion (point de départ de la reprise après redémarrage) puis celui envoyé.
+    assert len(positions) == 2 and positions[1].precision_m is not None and float(positions[1].precision_m) == 8.5
     assert s.plateforme.agent_livreur(str(livreur_id)).situation.position == pt(25, 0)
     assert (await s.api.post("/livreurs/moi/deconnexion", headers=livreur)).json() == {"etat": "hors_ligne"}
     assert s.plateforme.agent_livreur(str(livreur_id)) is None

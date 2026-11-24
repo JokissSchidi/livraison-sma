@@ -27,6 +27,7 @@ class ReglagesSupervision:
     periode_s: float = 5.0  # fréquence de la vérification
     alerte_apres_s: float = 45.0  # silence GPS qui déclenche l'alerte au répartiteur
     reattribution_apres_s: float = 120.0  # silence GPS qui déclenche la réattribution
+    deconnexion_apres_s: float = 600.0  # livreur en ligne SANS course et sans signal : déconnecté (NF-07)
 
 
 class Superviseur:
@@ -91,4 +92,16 @@ class Superviseur:
                     self._alertes.discard(cid)
                     pf.lancer_reattribution(cid, "perte du signal GPS")  # en arrière-plan : on continue de surveiller
                     actions.append((cid, "reattribution"))
+            actions += await self._deconnecter_inactifs()
         return actions
+
+    async def _deconnecter_inactifs(self) -> list[tuple[str, str]]:
+        """Un livreur sans course dont le téléphone ne donne plus signe de vie n'a plus à être « en ligne »."""
+        pf, faites = self.plateforme, []
+        for lid, agent in pf.gestionnaire.en_ligne().items():
+            silence = (datetime.now(UTC) - agent.situation.position_le).total_seconds()
+            if agent.situation.nb_courses == 0 and silence >= self.reglages.deconnexion_apres_s:
+                await pf.deconnecter_livreur(lid)
+                journal.info("Livreur %s déconnecté : aucun signal depuis %.0f s", lid, silence)
+                faites.append((lid, "deconnexion"))
+        return faites

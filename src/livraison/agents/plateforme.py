@@ -4,15 +4,21 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
+import uuid
+from collections import defaultdict
 from dataclasses import dataclass, field
+
+from sqlalchemy import update
 
 from livraison.agents.annuaire import AnnuaireAgent
 from livraison.agents.dispatcher import DispatcherAgent, ReglagesDispatcher, ResultatAttribution
-from livraison.agents.gestionnaire import GestionnaireLivreurs
+from livraison.agents.gestionnaire import GestionnaireLivreurs, jid_livreur
 from livraison.agents.supervision import ReglagesSupervision, Superviseur
 from livraison.config import parametres
+from livraison.db.modeles import Livreur
 from livraison.modele.offre import Coefficients, Demande, Proposition, SituationLivreur
 from livraison.services.comptes_xmpp import ComptesEjabberd
+from livraison.services import restauration
 from livraison.services.depot import Depot
 from livraison.services.itineraires import ClientItineraires
 
@@ -55,7 +61,7 @@ class Plateforme:
         self._taches: set[asyncio.Task] = set()
 
     # ------------------------------------------------------------------ démarrage / arrêt
-    async def demarrer(self) -> None:
+    async def demarrer(self, restaurer: bool = True) -> None:
         d, mdp, port = parametres.xmpp_domaine, parametres.xmpp_mot_de_passe_agents, parametres.xmpp_port
         noms = (f"{self.prefixe}annuaire", f"{self.prefixe}dispatcher")
         for nom in noms:
@@ -70,6 +76,58 @@ class Plateforme:
         self.gestionnaire = GestionnaireLivreurs(f"{noms[0]}@{d}", self.itineraires, self.coef, self.comptes)
         self.superviseur.demarrer()
         journal.info("Plateforme multi-agents démarrée")
+        if restaurer:
+            try:
+                bilan = await self.restaurer()
+                journal.info("Reprise après redémarrage : %s", bilan)
+            except Exception:  # noqa: BLE001
+                journal.exception("REPRISE APRÈS REDÉMARRAGE ÉCHOUÉE : des commandes en cours peuvent ne pas avoir repris")
+
+    async def restaurer(self) -> dict[str, int]:
+        """F-36 : reconstruit agents et commandes en cours à partir de la base de données (NF-04 : aucune commande perdue)."""
+        async with self.fabrique_session() as s:
+            commandes = await restauration.lire_commandes_en_cours(s)
+            livreurs = await restauration.lire_livreurs_en_ligne(s)
+        chez_livreur = defaultdict(list)
+        for c in commandes:
+            if c.etat in restauration.CHEZ_LE_LIVREUR and c.livreur_id:
+                chez_livreur[c.livreur_id].append(c)
+        bilan = {"livreurs": 0, "commandes_attribuees": 0, "commandes_a_attribuer": 0}
+
+        # 1. Les agents des livreurs qui étaient en ligne, avec leurs courses en cours.
+        for lv in livreurs:
+            mes_courses = chez_livreur.get(lv.id, [])
+            arrets, poids = restauration.arrets_du_livreur(mes_courses)
+            situation = SituationLivreur(
+                livreur_id=lv.id, vehicule=lv.vehicule, capacite_kg=lv.capacite_kg, position=lv.position,
+                position_le=lv.position_le, arrets_restants=arrets, nb_courses=len(mes_courses),
+                charge_kg=poids, note=lv.note)
+            agent = await self.gestionnaire.connecter(situation)
+            agent.courses.update({c.id: c.demande for c in mes_courses})
+            bilan["livreurs"] += 1
+
+        # 2. Les commandes déjà attribuées : le Dispatcher les retrouve (la surveillance GPS s'applique de nouveau).
+        for livreur_id, mes_courses in chez_livreur.items():
+            for c in mes_courses:
+                self.dispatcher.restaurer_attribuee(c.id, c.demande, livreur_id, jid_livreur(livreur_id),
+                                                    c.urgente, c.cree_le)
+                bilan["commandes_attribuees"] += 1
+
+        # 3. Les commandes en recherche (ou créées juste avant l'arrêt) repartent dans la file d'attente.
+        for c in commandes:
+            if c.etat in restauration.NON_ATTRIBUEES:
+                self.depot.sur_evenement(c.id, "reprise", {"etat": c.etat.value})
+                self.lancer_attribution(c.id, c.demande, c.urgente)
+                bilan["commandes_a_attribuer"] += 1
+        return bilan
+
+    async def deconnecter_livreur(self, livreur_id: str) -> bool:
+        """Retire l'agent du livreur et le marque hors ligne en base."""
+        retire = await self.gestionnaire.deconnecter(livreur_id)
+        async with self.fabrique_session() as s:
+            await s.execute(update(Livreur).where(Livreur.utilisateur_id == uuid.UUID(livreur_id)).values(en_ligne=False))
+            await s.commit()
+        return retire
 
     async def arreter(self) -> None:
         await self.superviseur.arreter()
